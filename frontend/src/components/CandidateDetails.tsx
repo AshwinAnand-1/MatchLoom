@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { Candidate } from '../types';
 import { EvidenceCard } from './EvidenceCard';
-import { X, Sparkles, ChevronRight, Cpu, Network, GitBranch, ArrowRight } from 'lucide-react';
+import { X, Sparkles, ChevronRight } from 'lucide-react';
 
 interface CandidateDetailsProps {
   candidate: Candidate;
@@ -66,65 +66,39 @@ export const CandidateDetails: React.FC<CandidateDetailsProps> = ({
         </div>
 
         {/* High-Level Score Dashboard */}
-        <div className="px-6 py-4 bg-white border-b border-slate-100 grid grid-cols-4 gap-3 text-center">
+        <div className="px-6 py-4 bg-white border-b border-slate-100 grid grid-cols-3 gap-3 text-center">
           <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 shadow-2xs">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Overall Score</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 block">Match Score</span>
             <span className="text-2xl font-black text-slate-900">{candidate.final_score}</span>
-            <span className="text-[9px] text-emerald-600 block font-bold mt-0.5">Deterministic</span>
+            <span className="text-[9px] text-emerald-600 block font-bold mt-0.5">Overall Fit</span>
           </div>
 
           <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 shadow-2xs">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Must-Have</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 block">Core Requirements</span>
             <span className="text-2xl font-black text-indigo-600">
               {candidate.must_have_matched} / {candidate.must_have_total}
             </span>
-            <span className="text-[9px] text-slate-400 block font-semibold mt-0.5">Core Requirements</span>
+            <span className="text-[9px] text-slate-400 block font-semibold mt-0.5">Required Skills Verified</span>
           </div>
 
           <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 shadow-2xs">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Semantic Fit</span>
-            <span className="text-2xl font-black text-slate-800">{candidate.semantic_quality_pct}%</span>
-            <span className="text-[9px] text-slate-400 block font-semibold mt-0.5">MiniLM Cosine</span>
-          </div>
-
-          <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 shadow-2xs">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Keyword Fit</span>
-            <span className="text-2xl font-black text-slate-800">{candidate.keyword_quality_pct}%</span>
-            <span className="text-[9px] text-slate-400 block font-semibold mt-0.5">BM25 Okapi</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 block">Requirement Coverage</span>
+            <span className="text-2xl font-black text-slate-800">{Math.round(candidate.must_have_coverage_pct)}%</span>
+            <span className="text-[9px] text-slate-400 block font-semibold mt-0.5">Coverage Rate</span>
           </div>
         </div>
 
-        {/* Signal Architecture Flow Banner (Feature 12) */}
-        <div className="px-6 py-3 bg-indigo-50/50 border-b border-indigo-100/70">
-          <span className="text-[9px] font-black uppercase tracking-wider text-indigo-900 block mb-2">
-            MULTI-SIGNAL DECISION ARCHITECTURE
+        {/* Product Note on How We Decided */}
+        <div className="px-6 py-3 bg-indigo-50/40 border-b border-indigo-100/60 flex items-center justify-between text-xs text-slate-600">
+          <span className="font-medium text-slate-600 leading-tight">
+            Score reflects how strongly the candidate's verified experience aligns with role requirements and the supporting evidence found in the resume.
           </span>
-          <div className="flex items-center justify-between text-[11px] font-semibold text-slate-600 bg-white p-2.5 rounded-xl border border-indigo-100">
-            <div className="flex items-center space-x-1.5">
-              <Cpu className="w-3.5 h-3.5 text-sky-600" />
-              <span>BM25 ({candidate.keyword_quality_pct}%)</span>
-            </div>
-            <span>+</span>
-            <div className="flex items-center space-x-1.5">
-              <Network className="w-3.5 h-3.5 text-purple-600" />
-              <span>Semantic ({candidate.semantic_quality_pct}%)</span>
-            </div>
-            <span>+</span>
-            <div className="flex items-center space-x-1.5">
-              <GitBranch className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Graph ({candidate.relationship_quality_pct}%)</span>
-            </div>
-            <ArrowRight className="w-3.5 h-3.5 text-indigo-600" />
-            <span className="font-black text-indigo-900 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-200">
-              Score {candidate.final_score}
-            </span>
-          </div>
         </div>
 
         {/* Filter Bar */}
         <div className="px-6 pt-4 pb-2 flex items-center justify-between">
           <h3 className="text-xs uppercase font-black tracking-wider text-slate-800">
-            DECISION TRACE &bull; VERIFIED EVIDENCE
+            VERIFIED EVIDENCE ACROSS REQUIREMENTS
           </h3>
 
           <div className="flex items-center space-x-1 bg-slate-100 p-1 rounded-xl text-xs">
@@ -142,7 +116,7 @@ export const CandidateDetails: React.FC<CandidateDetailsProps> = ({
                 filter === "must_have" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-500 hover:text-slate-900"
               }`}
             >
-              Must-Have
+              Core Only
             </button>
             <button
               onClick={() => setFilter("matched")}

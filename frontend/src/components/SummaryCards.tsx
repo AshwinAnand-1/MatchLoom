@@ -6,13 +6,11 @@ import { useCountUp } from '../hooks/useCountUp';
 interface SummaryCardsProps {
   summary: TopSummary;
   onScrollToGems?: () => void;
-  onScrollToScatter?: () => void;
 }
 
 export const SummaryCards: React.FC<SummaryCardsProps> = ({ 
   summary, 
-  onScrollToGems,
-  onScrollToScatter 
+  onScrollToGems 
 }) => {
   const animatedScore = useCountUp(summary.top_score, 1200);
   const animatedCandidates = useCountUp(summary.candidates_count, 800);
@@ -127,15 +125,14 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <span className="text-xs text-amber-700 font-extrabold">Overlooked Talent</span>
           </div>
           <p className="text-[11px] text-amber-700 font-extrabold mt-1 flex items-center gap-1">
-            <span>High semantic &bull; low keyword</span>
+            <span>High potential &bull; often missed</span>
           </p>
         </div>
       </div>
 
       {/* 4. Total Candidates Evaluated */}
       <div 
-        onClick={onScrollToScatter}
-        className="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group cursor-pointer"
+        className="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group"
       >
         <div className="flex items-center justify-between text-slate-500 mb-2">
           <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
@@ -150,10 +147,10 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <span className="text-3xl font-black text-slate-900 tracking-tight">
               {animatedCandidates}
             </span>
-            <span className="text-xs text-slate-400 font-extrabold">Resumes</span>
+            <span className="text-xs text-slate-400 font-extrabold">Applicants</span>
           </div>
           <p className="text-[11px] text-slate-500 font-bold mt-1">
-            Deterministic Python formula
+            Shortlist ready
           </p>
         </div>
       </div>

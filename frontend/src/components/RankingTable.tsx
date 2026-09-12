@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Candidate } from '../types';
-import { Eye, Sparkles, Scale } from 'lucide-react';
+import { Eye, Sparkles, Scale, ArrowRight } from 'lucide-react';
 
 interface RankingTableProps {
   candidates: Candidate[];
@@ -39,13 +39,13 @@ export const RankingTable: React.FC<RankingTableProps> = ({
       <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h3 className="text-base font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-            <span>Deterministic Candidate Rankings</span>
+            <span>Candidate Shortlist</span>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 font-bold">
-              Multi-Factor Mathematical Sort
+              {candidates.length} Evaluated
             </span>
           </h3>
           <p className="text-xs text-slate-500 mt-0.5">
-            Ranked by calculated hybrid formula: 50% Must-Have + 5% Nice-Have + 45% Signal Weights.
+            Ranked by overall role alignment and verified evidence found in candidate resumes.
           </p>
         </div>
 
@@ -55,7 +55,8 @@ export const RankingTable: React.FC<RankingTableProps> = ({
             className="inline-flex items-center text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/80 px-4 py-2 rounded-xl transition-all hover:shadow-2xs cursor-pointer"
           >
             <Scale className="w-3.5 h-3.5 mr-1.5" />
-            Compare #1 vs #2 →
+            Compare Top Candidates
+            <ArrowRight className="w-3.5 h-3.5 ml-1" />
           </button>
         )}
       </div>
@@ -66,13 +67,11 @@ export const RankingTable: React.FC<RankingTableProps> = ({
           <thead>
             <tr className="bg-slate-50/70 border-b border-slate-200/80 text-slate-400 uppercase font-black tracking-wider text-[10px]">
               <th className="py-3.5 px-4 w-16 text-center">Rank</th>
-              <th className="py-3.5 px-4">Candidate Name</th>
-              <th className="py-3.5 px-4">Overall Score</th>
-              <th className="py-3.5 px-4">Must-Have Match</th>
-              <th className="py-3.5 px-4">Semantic Fit</th>
-              <th className="py-3.5 px-4">Keyword Fit</th>
-              <th className="py-3.5 px-4">Match Tier</th>
-              <th className="py-3.5 px-4 text-right">Decision Trace</th>
+              <th className="py-3.5 px-4">Candidate</th>
+              <th className="py-3.5 px-4">Match Score</th>
+              <th className="py-3.5 px-4">Core Requirements</th>
+              <th className="py-3.5 px-4">Match</th>
+              <th className="py-3.5 px-4 text-right">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 text-slate-700">
@@ -82,7 +81,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({
                 <tr
                   key={cand.candidate_id}
                   onClick={() => onSelectCandidate(cand)}
-                  style={{ animationDelay: `${idx * 60}ms` }}
+                  style={{ animationDelay: `${idx * 50}ms` }}
                   className="animate-fade-in-up hover:bg-slate-50/90 transition-colors cursor-pointer group"
                 >
                   {/* Rank Badge */}
@@ -110,13 +109,13 @@ export const RankingTable: React.FC<RankingTableProps> = ({
                     </span>
                   </td>
 
-                  {/* Overall Score with Progress Bar */}
+                  {/* Match Score */}
                   <td className="py-4 px-4">
                     <div className="flex items-center space-x-3">
-                      <span className="text-base font-black text-slate-900 w-10">
+                      <span className="text-base font-black text-slate-900 w-11">
                         {cand.final_score}
                       </span>
-                      <div className="w-20 bg-slate-100 rounded-full h-2 overflow-hidden shadow-inner">
+                      <div className="w-24 bg-slate-100 rounded-full h-2 overflow-hidden shadow-inner">
                         <div
                           className={`h-full rounded-full transition-all duration-700 ${
                             cand.final_score >= 75 ? "bg-emerald-500" : cand.final_score >= 60 ? "bg-indigo-500" : "bg-amber-500"
@@ -127,30 +126,20 @@ export const RankingTable: React.FC<RankingTableProps> = ({
                     </div>
                   </td>
 
-                  {/* Must-Have */}
+                  {/* Core Requirements */}
                   <td className="py-4 px-4">
                     <span className="font-extrabold text-slate-900 text-sm">
                       {cand.must_have_matched} / {cand.must_have_total}
                     </span>
-                    <span className="text-[10px] text-slate-400 ml-1.5 font-bold">
-                      ({Math.round(cand.must_have_coverage_pct)}%)
+                    <span className="text-[11px] text-slate-400 ml-1.5 font-medium">
+                      matched
                     </span>
-                  </td>
-
-                  {/* Semantic */}
-                  <td className="py-4 px-4">
-                    <span className="font-bold text-slate-800">{cand.semantic_quality_pct}%</span>
-                  </td>
-
-                  {/* Keyword */}
-                  <td className="py-4 px-4">
-                    <span className="font-bold text-slate-800">{cand.keyword_quality_pct}%</span>
                   </td>
 
                   {/* Match Tier */}
                   <td className="py-4 px-4">
                     <span className={`inline-flex items-center text-[11px] font-extrabold px-3 py-1 rounded-full border ${getTierBadgeStyle(cand.match_tier)}`}>
-                      {cand.match_tier}
+                      {cand.match_tier} Match
                     </span>
                   </td>
 
@@ -164,7 +153,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({
                       className="inline-flex items-center px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white group-hover:bg-indigo-600 text-slate-700 group-hover:text-white border border-slate-200 group-hover:border-indigo-600 transition-all duration-150 shadow-2xs group-hover:shadow-glow-indigo cursor-pointer"
                     >
                       <Eye className="w-3.5 h-3.5 mr-1.5" />
-                      Inspect Evidence
+                      View Candidate
                     </button>
                   </td>
                 </tr>

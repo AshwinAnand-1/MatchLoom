@@ -23,10 +23,10 @@ export const JDAuditModal: React.FC<JDAuditModalProps> = ({ audit, onClose }) =>
             </div>
             <div>
               <h3 className="text-base font-black text-slate-900">
-                Job Description Quality &amp; Narrowness Audit
+                Job Description Insights
               </h3>
               <p className="text-xs text-slate-500 font-medium">
-                Automated heuristic evaluation to maximize talent pool reach and eliminate bias.
+                Ensure role clarity, balanced requirements, and optimal candidate reach.
               </p>
             </div>
           </div>
@@ -45,17 +45,17 @@ export const JDAuditModal: React.FC<JDAuditModalProps> = ({ audit, onClose }) =>
           <div className="grid grid-cols-2 gap-4">
             <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 shadow-2xs">
               <span className="text-[10px] uppercase font-black tracking-wider text-slate-400 block">
-                Must-Have Constraints
+                Core Requirements
               </span>
               <span className="text-2xl font-black text-slate-900">{audit.must_have_count}</span>
-              <span className="text-[10px] text-slate-400 block mt-0.5">Mandatory qualifications</span>
+              <span className="text-[10px] text-slate-400 block mt-0.5">Essential qualifications</span>
             </div>
             <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 shadow-2xs">
               <span className="text-[10px] uppercase font-black tracking-wider text-slate-400 block">
-                Nice-to-Have Constraints
+                Preferred Qualifications
               </span>
               <span className="text-2xl font-black text-slate-900">{audit.nice_to_have_count}</span>
-              <span className="text-[10px] text-slate-400 block mt-0.5">Preferred competencies</span>
+              <span className="text-[10px] text-slate-400 block mt-0.5">Bonus competencies</span>
             </div>
           </div>
 
@@ -64,7 +64,7 @@ export const JDAuditModal: React.FC<JDAuditModalProps> = ({ audit, onClose }) =>
             <div>
               <h4 className="text-xs uppercase font-black tracking-wider text-amber-900 mb-3 flex items-center gap-1.5">
                 <AlertOctagon className="w-4 h-4 text-amber-600" />
-                Detected Optimization Opportunities ({audit.warnings.length})
+                Recommendations ({audit.warnings.length})
               </h4>
               <div className="space-y-3">
                 {audit.warnings.map((warn, idx) => (
@@ -75,7 +75,7 @@ export const JDAuditModal: React.FC<JDAuditModalProps> = ({ audit, onClose }) =>
                     </div>
                     {audit.suggestions[idx] && (
                       <div className="mt-2 pt-2 border-t border-amber-200/60 text-amber-800 text-[11px] leading-relaxed">
-                        <strong>Recruiter Recommendation:</strong> {audit.suggestions[idx]}
+                        <strong>Recruiter Suggestion:</strong> {audit.suggestions[idx]}
                       </div>
                     )}
                   </div>
@@ -88,7 +88,7 @@ export const JDAuditModal: React.FC<JDAuditModalProps> = ({ audit, onClose }) =>
               <div>
                 <span className="font-black text-sm block mb-0.5">Balanced Job Description</span>
                 <p className="text-[11px] text-emerald-800 leading-relaxed">
-                  Job Description is well-balanced with clear, focused, and realistic technical criteria. No excessive constraints or competing framework demands detected.
+                  Job description is well-balanced with clear, focused, and realistic technical criteria. No excessive constraints or competing framework demands detected.
                 </p>
               </div>
             </div>
@@ -98,13 +98,13 @@ export const JDAuditModal: React.FC<JDAuditModalProps> = ({ audit, onClose }) =>
         {/* Footer */}
         <div className="p-5 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
           <span className="text-xs text-slate-400">
-            Heuristic audit powered by deterministic taxonomy analysis
+            Focused role criteria yield higher-quality candidate matches.
           </span>
           <button
             onClick={onClose}
             className="px-5 py-2.5 rounded-xl text-xs font-extrabold bg-slate-900 hover:bg-slate-800 text-white transition-colors cursor-pointer"
           >
-            Done
+            Close
           </button>
         </div>
       </div>

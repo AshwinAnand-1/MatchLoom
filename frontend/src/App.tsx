@@ -5,8 +5,6 @@ import { SummaryCards } from './components/SummaryCards';
 import { RankingTable } from './components/RankingTable';
 import { Top3Section } from './components/Top3Section';
 import { HiddenGem } from './components/HiddenGem';
-import { CandidateScatterMatrix } from './components/CandidateScatterMatrix';
-import { PipelineFlowVisual } from './components/PipelineFlowVisual';
 import { CandidateDetails } from './components/CandidateDetails';
 import { CompareView } from './components/CompareView';
 import { JDAuditModal } from './components/JDAudit';
@@ -137,9 +135,6 @@ export function App() {
           </div>
         )}
 
-        {/* Pipeline Architecture Flow Banner */}
-        <PipelineFlowVisual isAnalyzing={isAnalyzing} />
-
         {/* Workspace Hero / Upload Panel */}
         <UploadPanel
           onAnalyze={handleAnalyze}
@@ -157,9 +152,6 @@ export function App() {
               onScrollToGems={() => {
                 document.getElementById('hidden-gems-section')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              onScrollToScatter={() => {
-                document.getElementById('scatter-matrix-section')?.scrollIntoView({ behavior: 'smooth' });
-              }}
             />
 
             {/* 2. Top 3 Candidate Cards */}
@@ -175,15 +167,7 @@ export function App() {
               onSelectCandidate={(c) => setSelectedCandidate(c)}
             />
 
-            {/* 4. Semantic vs Keyword Scatter Matrix Quadrant Chart */}
-            <div id="scatter-matrix-section">
-              <CandidateScatterMatrix
-                candidates={data.ranking}
-                onSelectCandidate={(c) => setSelectedCandidate(c)}
-              />
-            </div>
-
-            {/* 5. Deterministic Ranking Table */}
+            {/* 4. Candidate Shortlist Table */}
             <RankingTable
               candidates={data.ranking}
               onSelectCandidate={(c) => setSelectedCandidate(c)}
@@ -200,14 +184,14 @@ export function App() {
                 No Shortlist Generated Yet
               </h3>
               <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 mb-6 leading-relaxed">
-                Upload your Job Description and resumes above, or click below to launch the live demo with 8 synthetic candidate resumes.
+                Upload your role description and applicant resumes above, or click below to review a sample candidate pool.
               </p>
               <button
                 onClick={handleLoadDemo}
                 className="inline-flex items-center px-5 py-3 rounded-2xl text-xs font-black bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-md hover:shadow-glow-indigo hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 mr-2 text-indigo-200 animate-pulse" />
-                Load Demo Hackathon Data (8 Resumes) →
+                Load Sample Candidate Pool (8 Resumes) →
               </button>
             </div>
           )

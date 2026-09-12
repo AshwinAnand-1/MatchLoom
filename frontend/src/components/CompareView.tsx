@@ -142,62 +142,38 @@ export const CompareView: React.FC<CompareViewProps> = ({
                 </div>
               </div>
 
-              {/* Horizontal Comparison Bars (Feature 17) */}
-              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-4">
+              {/* Core Requirement Coverage Comparison */}
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
                 <span className="text-[10px] uppercase font-black tracking-wider text-slate-500 block">
-                  SIGNAL-BY-SIGNAL COMPARISON BARS
+                  CORE QUALIFICATION COMPARISON
                 </span>
 
-                {/* Semantic Comparison */}
                 <div>
-                  <div className="flex justify-between text-xs font-extrabold mb-1">
-                    <span className="text-slate-700">Semantic Relevance</span>
-                    <span className="text-slate-500">
-                      {candA.candidate_name}: <strong>{candA.semantic_quality_pct}%</strong> vs {candB.candidate_name}: <strong>{candB.semantic_quality_pct}%</strong>
+                  <div className="flex justify-between text-xs font-extrabold mb-1.5">
+                    <span className="text-slate-700">Core Requirements Verified</span>
+                    <span className="text-slate-600 font-bold">
+                      {candA.candidate_name}: <strong>{candA.must_have_matched} / {candA.must_have_total}</strong> vs {candB.candidate_name}: <strong>{candB.must_have_matched} / {candB.must_have_total}</strong>
                     </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                      <div className="bg-indigo-600 h-full rounded-full" style={{ width: `${candA.semantic_quality_pct}%` }} />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="font-bold text-slate-800 text-xs truncate">{candA.candidate_name}</span>
+                        <span className="font-extrabold text-indigo-600 text-xs">{Math.round(candA.must_have_coverage_pct)}%</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div className="bg-indigo-600 h-full rounded-full transition-all duration-700" style={{ width: `${candA.must_have_coverage_pct}%` }} />
+                      </div>
                     </div>
-                    <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                      <div className="bg-purple-600 h-full rounded-full" style={{ width: `${candB.semantic_quality_pct}%` }} />
-                    </div>
-                  </div>
-                </div>
 
-                {/* Keyword Comparison */}
-                <div>
-                  <div className="flex justify-between text-xs font-extrabold mb-1">
-                    <span className="text-slate-700">Keyword Relevance</span>
-                    <span className="text-slate-500">
-                      {candA.candidate_name}: <strong>{candA.keyword_quality_pct}%</strong> vs {candB.candidate_name}: <strong>{candB.keyword_quality_pct}%</strong>
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                      <div className="bg-sky-600 h-full rounded-full" style={{ width: `${candA.keyword_quality_pct}%` }} />
-                    </div>
-                    <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                      <div className="bg-teal-600 h-full rounded-full" style={{ width: `${candB.keyword_quality_pct}%` }} />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Must-Have Comparison */}
-                <div>
-                  <div className="flex justify-between text-xs font-extrabold mb-1">
-                    <span className="text-slate-700">Must-Have Requirement Coverage</span>
-                    <span className="text-slate-500">
-                      {candA.candidate_name}: <strong>{candA.must_have_matched}/{candA.must_have_total}</strong> vs {candB.candidate_name}: <strong>{candB.must_have_matched}/{candB.must_have_total}</strong>
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                      <div className="bg-emerald-600 h-full rounded-full" style={{ width: `${candA.must_have_coverage_pct}%` }} />
-                    </div>
-                    <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                      <div className="bg-emerald-600 h-full rounded-full" style={{ width: `${candB.must_have_coverage_pct}%` }} />
+                    <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="font-bold text-slate-800 text-xs truncate">{candB.candidate_name}</span>
+                        <span className="font-extrabold text-purple-600 text-xs">{Math.round(candB.must_have_coverage_pct)}%</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div className="bg-purple-600 h-full rounded-full transition-all duration-700" style={{ width: `${candB.must_have_coverage_pct}%` }} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -243,11 +219,9 @@ export const CompareView: React.FC<CompareViewProps> = ({
                           <td className="p-3.5 font-bold text-slate-900">{item.requirement}</td>
                           <td className="p-3.5">
                             <span className="font-semibold text-slate-700">{item.type_higher}</span>
-                            <span className="text-slate-400 ml-1">({item.score_higher})</span>
                           </td>
                           <td className="p-3.5">
                             <span className="font-semibold text-slate-700">{item.type_lower}</span>
-                            <span className="text-slate-400 ml-1">({item.score_lower})</span>
                           </td>
                           <td className="p-3.5 text-right font-black text-indigo-600">
                             {item.delta > 0 ? `+${item.delta}` : item.delta}

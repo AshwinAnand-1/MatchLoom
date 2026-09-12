@@ -81,30 +81,27 @@ export const Top3Section: React.FC<Top3SectionProps> = ({
                   {item.candidate_name}
                 </h4>
 
-                {/* Signal Metrics Pill Bar */}
+                {/* Recruiter Metric Pills */}
                 {matchedCand && (
                   <div className="flex items-center space-x-2 my-3 text-[11px]">
-                    <span className="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold border border-indigo-100">
-                      Must: {matchedCand.must_have_matched}/{matchedCand.must_have_total}
+                    <span className="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold border border-indigo-100">
+                      {matchedCand.must_have_matched} of {matchedCand.must_have_total} Core Met
                     </span>
-                    <span className="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 font-bold border border-purple-100">
-                      Sem: {matchedCand.semantic_quality_pct}%
-                    </span>
-                    <span className="px-2 py-0.5 rounded-md bg-sky-50 text-sky-700 font-bold border border-sky-100">
-                      KW: {matchedCand.keyword_quality_pct}%
+                    <span className="px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-bold border border-emerald-100">
+                      {matchedCand.match_tier} Match
                     </span>
                   </div>
                 )}
 
                 {/* Recruiter Rationale Box */}
-                <p className="text-xs text-slate-600 leading-relaxed bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100/90 mt-2">
+                <p className="text-xs text-slate-600 leading-relaxed bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100/90 mt-2 font-medium">
                   {item.explanation}
                 </p>
               </div>
 
               {/* Action Link */}
               <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-extrabold text-indigo-600 group-hover:text-indigo-800 transition-colors">
-                <span>Inspect Evidence Trace</span>
+                <span>View Candidate Evidence</span>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>

@@ -32,16 +32,16 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
               
               {/* Shimmering Badge */}
-              <div className="relative overflow-hidden rounded-full px-2.5 py-0.5 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 border border-emerald-300/60 shadow-2xs">
-                <span className="relative z-10 inline-flex items-center text-[10px] font-black tracking-wider text-emerald-800 uppercase">
-                  <Sparkles className="w-3 h-3 mr-1 text-emerald-600 animate-spin-slow" />
-                  HYBRID AI SHORTLISTING
+              <div className="relative overflow-hidden rounded-full px-2.5 py-0.5 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-blue-500/10 border border-indigo-200 shadow-2xs">
+                <span className="relative z-10 inline-flex items-center text-[10px] font-black tracking-wider text-indigo-800 uppercase">
+                  <Sparkles className="w-3 h-3 mr-1 text-indigo-600 animate-spin-slow" />
+                  EVIDENCE-FIRST HIRING
                 </span>
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none" />
               </div>
             </div>
             <p className="text-xs text-slate-500 font-medium tracking-tight">
-              Evidence-First AI Hiring Intelligence &bull; Rank candidates. Inspect evidence. Make the decision.
+              Find the strongest candidates — and understand why.
             </p>
           </div>
         </div>
@@ -54,7 +54,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="inline-flex items-center px-3.5 py-2 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 hover:border-slate-300 shadow-2xs hover:shadow-xs hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
             >
               <FileSearch className="w-3.5 h-3.5 mr-1.5 text-slate-500" />
-              JD Quality Audit
+              Job Description Insights
               {auditWarningsCount > 0 && (
                 <span className="ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] bg-amber-100 text-amber-800 font-black">
                   {auditWarningsCount}

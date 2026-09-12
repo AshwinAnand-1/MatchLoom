@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Header } from './components/Header';
 import { UploadPanel } from './components/UploadPanel';
 import { SummaryCards } from './components/SummaryCards';
 import { RankingTable } from './components/RankingTable';
 import { Top3Section } from './components/Top3Section';
 import { HiddenGem } from './components/HiddenGem';
+import { CandidateScatterMatrix } from './components/CandidateScatterMatrix';
+import { PipelineFlowVisual } from './components/PipelineFlowVisual';
 import { CandidateDetails } from './components/CandidateDetails';
 import { CompareView } from './components/CompareView';
 import { JDAuditModal } from './components/JDAudit';
 import type { AnalysisResponse, Candidate } from './types';
+import { Sparkles, Shield } from 'lucide-react';
 
 export function App() {
   const [data, setData] = useState<AnalysisResponse | null>(null);
@@ -18,7 +21,33 @@ export function App() {
   const [showAuditModal, setShowAuditModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Load Demo Data from FastAPI endpoint
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Subtle interactive background tracking cursor with requestAnimationFrame
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    let rafId: number;
+    const handleMouseMove = (e: MouseEvent) => {
+      rafId = requestAnimationFrame(() => {
+        if (containerRef.current) {
+          const x = (e.clientX / window.innerWidth) * 100;
+          const y = (e.clientY / window.innerHeight) * 100;
+          containerRef.current.style.setProperty('--mouse-x', `${x.toFixed(2)}%`);
+          containerRef.current.style.setProperty('--mouse-y', `${y.toFixed(2)}%`);
+        }
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Load Demo Data from FastAPI backend
   const handleLoadDemo = async () => {
     setIsAnalyzing(true);
     setErrorMsg(null);
@@ -85,7 +114,8 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
+    <div ref={containerRef} className="interactive-mesh-bg min-h-screen text-slate-900 flex flex-col font-sans transition-colors duration-300">
+      {/* Upgraded Header */}
       <Header
         jdAudit={data?.jd_audit || null}
         onOpenAudit={() => setShowAuditModal(true)}
@@ -96,18 +126,21 @@ export function App() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Error Alert */}
         {errorMsg && (
-          <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 font-semibold flex items-center justify-between">
+          <div className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-800 font-bold flex items-center justify-between shadow-2xs animate-fade-in-up">
             <span>{errorMsg}</span>
             <button
               onClick={() => setErrorMsg(null)}
-              className="text-rose-600 hover:text-rose-900 font-bold ml-4"
+              className="text-rose-600 hover:text-rose-900 font-black ml-4"
             >
               Dismiss
             </button>
           </div>
         )}
 
-        {/* Upload & Signal Tuning Panel */}
+        {/* Pipeline Architecture Flow Banner */}
+        <PipelineFlowVisual isAnalyzing={isAnalyzing} />
+
+        {/* Workspace Hero / Upload Panel */}
         <UploadPanel
           onAnalyze={handleAnalyze}
           onLoadDemo={handleLoadDemo}
@@ -115,31 +148,42 @@ export function App() {
           totalAnalyzed={data?.total_candidates}
         />
 
-        {/* Results Area */}
+        {/* Dynamic Results Area */}
         {data ? (
-          <div>
-            {/* 4 Top Summary Metrics */}
+          <div className="animate-fade-in-up">
+            {/* 1. Score Summary Metrics */}
             <SummaryCards
               summary={data.top_summary}
               onScrollToGems={() => {
                 document.getElementById('hidden-gems-section')?.scrollIntoView({ behavior: 'smooth' });
               }}
+              onScrollToScatter={() => {
+                document.getElementById('scatter-matrix-section')?.scrollIntoView({ behavior: 'smooth' });
+              }}
             />
 
-            {/* Top 3 Shortlist Explanations */}
+            {/* 2. Top 3 Candidate Cards */}
             <Top3Section
               top3={data.top_3}
               candidates={data.ranking}
               onSelectCandidate={(c) => setSelectedCandidate(c)}
             />
 
-            {/* Hidden Gem Showcase */}
+            {/* 3. Hidden Gem Discovery */}
             <HiddenGem
               hiddenGems={data.hidden_gems}
               onSelectCandidate={(c) => setSelectedCandidate(c)}
             />
 
-            {/* Full Deterministic Candidate Rankings */}
+            {/* 4. Semantic vs Keyword Scatter Matrix Quadrant Chart */}
+            <div id="scatter-matrix-section">
+              <CandidateScatterMatrix
+                candidates={data.ranking}
+                onSelectCandidate={(c) => setSelectedCandidate(c)}
+              />
+            </div>
+
+            {/* 5. Deterministic Ranking Table */}
             <RankingTable
               candidates={data.ranking}
               onSelectCandidate={(c) => setSelectedCandidate(c)}
@@ -148,20 +192,21 @@ export function App() {
           </div>
         ) : (
           !isAnalyzing && (
-            <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 shadow-2xs">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-3 font-black text-xl">
+            <div className="text-center py-20 bg-white/70 backdrop-blur-md rounded-3xl border border-slate-200/90 shadow-2xs">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-50 to-purple-50 text-indigo-600 flex items-center justify-center mx-auto mb-4 font-black text-2xl shadow-inner border border-indigo-100">
                 N
               </div>
-              <h3 className="text-base font-extrabold text-slate-800">
-                No Candidates Evaluated Yet
+              <h3 className="text-lg font-black text-slate-900 tracking-tight">
+                No Shortlist Generated Yet
               </h3>
-              <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 mb-5">
-                Upload your Job Description and resumes above, or click &quot;Load Demo Hackathon Data&quot; to inspect real-time hybrid rankings with verified resume evidence.
+              <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 mb-6 leading-relaxed">
+                Upload your Job Description and resumes above, or click below to launch the live demo with 8 synthetic candidate resumes.
               </p>
               <button
                 onClick={handleLoadDemo}
-                className="inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-colors cursor-pointer"
+                className="inline-flex items-center px-5 py-3 rounded-2xl text-xs font-black bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-md hover:shadow-glow-indigo hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
               >
+                <Sparkles className="w-4 h-4 mr-2 text-indigo-200 animate-pulse" />
                 Load Demo Hackathon Data (8 Resumes) →
               </button>
             </div>
@@ -169,7 +214,7 @@ export function App() {
         )}
       </main>
 
-      {/* Slide-over Candidate Evidence Drawer */}
+      {/* Candidate Details Slide-Over Drawer */}
       {selectedCandidate && (
         <CandidateDetails
           candidate={selectedCandidate}
@@ -201,8 +246,17 @@ export function App() {
         />
       )}
 
-      <footer className="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-500">
-        Nexora &bull; Evidence-First AI Hiring Intelligence &bull; Hackathon Edition
+      {/* Responsible AI Notice & Footer */}
+      <footer className="border-t border-slate-200/80 bg-white/80 backdrop-blur-md py-5 text-center text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center justify-center sm:justify-start space-x-1.5 text-[11px] text-slate-500">
+            <Shield className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Ranking is based on job-relevant resume evidence. Personal attributes are not used in scoring.</span>
+          </div>
+          <span className="text-[11px] text-slate-400 font-medium">
+            Nexora &bull; Evidence-First AI Hiring Intelligence &bull; Version 2.0
+          </span>
+        </div>
       </footer>
     </div>
   );

@@ -34,6 +34,18 @@ class CompareRequest(BaseModel):
     candidate_a: dict
     candidate_b: dict
 
+@app.get("/")
+def root():
+    """Root endpoint with quick navigational links."""
+    return {
+        "service": "Nexora — Evidence-First AI Hiring Intelligence",
+        "message": "Backend API is live! Open the UI Dashboard at http://localhost:5173",
+        "frontend_dashboard": "http://localhost:5173",
+        "interactive_api_docs": "http://localhost:8000/docs",
+        "health": "/health",
+        "demo_data": "/demo-data"
+    }
+
 @app.get("/health")
 def health_check():
     """Health check endpoint."""

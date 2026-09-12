@@ -157,7 +157,7 @@ export function App() {
           !isAnalyzing && (
             <div className="text-center py-20 bg-white/70 backdrop-blur-md rounded-3xl border border-slate-200/90 shadow-2xs">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-50 to-purple-50 text-indigo-600 flex items-center justify-center mx-auto mb-4 font-black text-2xl shadow-inner border border-indigo-100">
-                N
+                M
               </div>
               <h3 className="text-lg font-black text-slate-900 tracking-tight">
                 No shortlist generated yet

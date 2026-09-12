@@ -90,7 +90,7 @@ export const EvidenceCard: React.FC<EvidenceCardProps> = ({ trace }) => {
             <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-200/60 text-[11px] text-slate-500 font-medium">
               <span className="flex items-center font-bold text-slate-600">
                 <FileText className="w-3.5 h-3.5 mr-1 text-slate-400" />
-                Resume &mdash; {trace.page ? `Page ${trace.page}` : "Extracted Page"}
+                Resume - {trace.page ? `Page ${trace.page}` : "Extracted Page"}
                 {trace.section && trace.section !== "GENERAL" && ` &bull; Section: ${trace.section}`}
               </span>
               <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-md">

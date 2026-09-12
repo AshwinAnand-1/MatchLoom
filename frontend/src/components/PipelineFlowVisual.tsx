@@ -12,7 +12,7 @@ export const PipelineFlowVisual: React.FC<PipelineFlowVisualProps> = ({ isAnalyz
         <div className="flex items-center space-x-2">
           <div className={`w-2 h-2 rounded-full ${isAnalyzing ? 'bg-amber-500 animate-ping' : 'bg-indigo-600 animate-pulse'}`} />
           <span className="text-[11px] font-black tracking-wider uppercase text-slate-500">
-            {isAnalyzing ? "Executing Multi-Signal Decision Pipeline..." : "Nexora Multi-Signal Decision Pipeline"}
+            {isAnalyzing ? "Executing Multi-Signal Decision Pipeline..." : "MatchLoom Multi-Signal Decision Pipeline"}
           </span>
         </div>
         <span className="text-[10px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 rounded-full">

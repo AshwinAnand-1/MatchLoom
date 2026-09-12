@@ -74,7 +74,7 @@ export const HiddenGem: React.FC<HiddenGemProps> = ({ hiddenGems, onSelectCandid
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-xs pt-1.5 border-t border-slate-100">
-                  <span className="text-slate-700 font-semibold">Nexora Evaluation:</span>
+                  <span className="text-slate-700 font-semibold">MatchLoom Evaluation:</span>
                   <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 text-[11px]">
                     Strong Role Alignment with Project Evidence
                   </span>

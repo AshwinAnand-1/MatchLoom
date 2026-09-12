@@ -23,12 +23,12 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Logo and Brand */}
         <div className="flex items-center space-x-3.5 group cursor-default">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-purple-600 flex items-center justify-center shadow-md shadow-indigo-200/80 text-white font-black text-xl tracking-wider group-hover:scale-105 group-hover:shadow-glow-indigo transition-all duration-300">
-            N
+            M
           </div>
           <div>
             <div className="flex items-center space-x-2.5">
               <span className="text-xl font-black tracking-tight text-slate-900 group-hover:text-indigo-900 transition-colors">
-                NEXORA
+                MatchLoom
               </span>
               
               {/* Shimmering Badge */}
@@ -41,7 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             </div>
             <p className="text-xs text-slate-500 font-medium tracking-tight">
-              Find the strongest candidates — and understand why.
+              Find the strongest candidates - and understand why.
             </p>
           </div>
         </div>

@@ -9,7 +9,6 @@ import { CandidateDetails } from './components/CandidateDetails';
 import { CompareView } from './components/CompareView';
 import { JDAuditModal } from './components/JDAudit';
 import type { AnalysisResponse, Candidate } from './types';
-import { Sparkles, Shield } from 'lucide-react';
 
 export function App() {
   const [data, setData] = useState<AnalysisResponse | null>(null);
@@ -44,25 +43,6 @@ export function App() {
       cancelAnimationFrame(rafId);
     };
   }, []);
-
-  // Load Demo Data from FastAPI backend
-  const handleLoadDemo = async () => {
-    setIsAnalyzing(true);
-    setErrorMsg(null);
-    try {
-      const res = await fetch('http://localhost:8000/demo-data');
-      if (!res.ok) {
-        throw new Error(`Failed to load demo data: ${res.statusText}`);
-      }
-      const result: AnalysisResponse = await res.json();
-      setData(result);
-    } catch (err: any) {
-      console.error(err);
-      setErrorMsg(err.message || 'Error loading demo data. Ensure backend is running.');
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
 
   // Upload and Analyze files
   const handleAnalyze = async (
@@ -138,7 +118,6 @@ export function App() {
         {/* Workspace Hero / Upload Panel */}
         <UploadPanel
           onAnalyze={handleAnalyze}
-          onLoadDemo={handleLoadDemo}
           isAnalyzing={isAnalyzing}
           totalAnalyzed={data?.total_candidates}
         />
@@ -181,18 +160,11 @@ export function App() {
                 N
               </div>
               <h3 className="text-lg font-black text-slate-900 tracking-tight">
-                No Shortlist Generated Yet
+                No shortlist generated yet
               </h3>
-              <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 mb-6 leading-relaxed">
-                Upload your role description and applicant resumes above, or click below to review a sample candidate pool.
+              <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 leading-relaxed">
+                Upload a job description and candidate resumes to begin your candidate evaluation.
               </p>
-              <button
-                onClick={handleLoadDemo}
-                className="inline-flex items-center px-5 py-3 rounded-2xl text-xs font-black bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-md hover:shadow-glow-indigo hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4 mr-2 text-indigo-200 animate-pulse" />
-                Load Sample Candidate Pool (8 Resumes) →
-              </button>
             </div>
           )
         )}
@@ -229,19 +201,6 @@ export function App() {
           onClose={() => setShowAuditModal(false)}
         />
       )}
-
-      {/* Responsible AI Notice & Footer */}
-      <footer className="border-t border-slate-200/80 bg-white/80 backdrop-blur-md py-5 text-center text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="flex items-center justify-center sm:justify-start space-x-1.5 text-[11px] text-slate-500">
-            <Shield className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Ranking is based on job-relevant resume evidence. Personal attributes are not used in scoring.</span>
-          </div>
-          <span className="text-[11px] text-slate-400 font-medium">
-            Nexora &bull; Evidence-First AI Hiring Intelligence &bull; Version 2.0
-          </span>
-        </div>
-      </footer>
     </div>
   );
 }

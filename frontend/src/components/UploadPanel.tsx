@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  UploadCloud, FileText, Sparkles, CheckCircle2, 
+  UploadCloud, FileText, CheckCircle2, 
   RefreshCw, X, ArrowRight, Check
 } from 'lucide-react';
 
 interface UploadPanelProps {
   onAnalyze: (jdFile: File, resumeFiles: File[], weights: { keyword: number; semantic: number; graph: number }) => void;
-  onLoadDemo: () => void;
   isAnalyzing: boolean;
   totalAnalyzed?: number;
 }
 
 const PRODUCT_ANALYSIS_STAGES = [
-  { title: "Analyzing your candidate pool...", desc: "Reading job requirements and candidate profiles" },
+  { title: "Analyzing candidate resumes...", desc: "Reading job requirements and candidate profiles" },
   { title: "Understanding role requirements...", desc: "Isolating core qualifications and expectations" },
   { title: "Reviewing candidate experience...", desc: "Evaluating projects, depth of experience, and skills" },
   { title: "Finding relevant evidence...", desc: "Verifying genuine project work and accomplishments" },
@@ -21,7 +20,6 @@ const PRODUCT_ANALYSIS_STAGES = [
 
 export const UploadPanel: React.FC<UploadPanelProps> = ({
   onAnalyze,
-  onLoadDemo,
   isAnalyzing,
   totalAnalyzed
 }) => {
@@ -89,18 +87,6 @@ export const UploadPanel: React.FC<UploadPanelProps> = ({
           <p className="text-xs text-slate-500 mt-0.5">
             Upload your job description and applicant resumes to generate an evidence-backed candidate ranking.
           </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={onLoadDemo}
-            disabled={isAnalyzing}
-            className="inline-flex items-center px-4 py-2.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-800 border border-emerald-200 hover:border-emerald-300 hover:shadow-glow-emerald hover:-translate-y-0.5 transition-all duration-200 shadow-2xs cursor-pointer"
-          >
-            <Sparkles className="w-4 h-4 mr-1.5 text-emerald-600 animate-pulse" />
-            Load Sample Candidates (8 Resumes)
-          </button>
         </div>
       </div>
 
